@@ -1,0 +1,135 @@
+<h4 id="nowViewing" class="text-center col-xs-12"></h4>
+
+<div class="skill-icons panel-body col-xs-12" style="text-align:center">
+  <a class="Skill" title="total" data-toggle="tooltip" data-placement="top"><img src="assets/images/skill_icons/Overall-icon.png" class="skill-icon"></a>
+  <a class="Skill" title="Attack" data-toggle="tooltip" data-placement="top"><img src="assets/images/skill_icons/Attack-icon.png" class="skill-icon"></a>
+  <a class="Skill" title="Defence" data-toggle="tooltip" data-placement="top"><img src="assets/images/skill_icons/Defence-icon.png" class="skill-icon"></a>
+  <a class="Skill" title="Strength" data-toggle="tooltip" data-placement="top"><img src="assets/skill_icons/Strength-icon.png" class="skill-icon"></a>
+  <a class="Skill" title="Hitpoints" data-toggle="tooltip" data-placement="top"><img src="assets/skill_icons/Constitution-icon.png" class="skill-icon"></a>
+  <a class="Skill" title="Ranged" data-toggle="tooltip" data-placement="top"><img src="assets/skill_icons/Ranged-icon.png" class="skill-icon"></a>
+  <a class="Skill" title="Prayer" data-toggle="tooltip" data-placement="top"><img src="assets/skill_icons/Prayer-icon.png" class="skill-icon"></a>
+  <a class="Skill" title="Magic" data-toggle="tooltip" data-placement="top"><img src="assets/skill_icons/Magic-icon.png" class="skill-icon"></a>
+  <a class="Skill" title="Cooking" data-toggle="tooltip" data-placement="top"><img src="assets/skill_icons/Cooking-icon.png" class="skill-icon"></a>
+  <a class="Skill" title="Woodcutting" data-toggle="tooltip" data-placement="top"><img src="assets/skill_icons/Woodcutting-icon.png" class="skill-icon"></a>
+  <a class="Skill" title="Fletching" data-toggle="tooltip" data-placement="top"><img src="assets/skill_icons/Fletching-icon.png" class="skill-icon"></a>
+  <a class="Skill" title="Fishing" data-toggle="tooltip" data-placement="top"><img src="assets/skill_icons/Fishing-icon.png" class="skill-icon"></a>
+  <a class="Skill" title="Firemaking" data-toggle="tooltip" data-placement="top"><img src="assets/skill_icons/Firemaking-icon.png" class="skill-icon"></a>
+  <a class="Skill" title="Crafting" data-toggle="tooltip" data-placement="top"><img src="assets/skill_icons/Crafting-icon.png" class="skill-icon"></a>
+  <a class="Skill" title="Smithing" data-toggle="tooltip" data-placement="top"><img src="assets/skill_icons/Smithing-icon.png" class="skill-icon"></a>
+  <a class="Skill" title="Mining" data-toggle="tooltip" data-placement="top"><img src="assets/skill_icons/Mining-icon.png" class="skill-icon"></a>
+  <a class="Skill" title="Herblore" data-toggle="tooltip" data-placement="top"><img src="assets/skill_icons/Herblore-icon.png" class="skill-icon"></a>
+  <a class="Skill" title="Agility" data-toggle="tooltip" data-placement="top"><img src="assets/skill_icons/Agility-icon.png" class="skill-icon"></a>
+  <a class="Skill" title="Thieving" data-toggle="tooltip" data-placement="top"><img src="assets/skill_icons/Thieving-icon.png" class="skill-icon"></a>
+  <a class="Skill" title="Slayer" data-toggle="tooltip" data-placement="top"><img src="assets/skill_icons/Slayer-icon.png" class="skill-icon"></a>
+  <a class="Skill" title="Farming" data-toggle="tooltip" data-placement="top"><img src="assets/skill_icons/Farming-icon.png" class="skill-icon"></a>
+  <a class="Skill" title="Runecrafting" data-toggle="tooltip" data-placement="top"><img src="assets/skill_icons/Runecrafting-icon.png" class="skill-icon"></a>
+  <a class="Skill" title="Hunter" data-toggle="tooltip" data-placement="top"><img src="assets/skill_icons/Hunter-icon.png" class="skill-icon"></a>
+  <a class="Skill" title="Construction" data-toggle="tooltip" data-placement="top"><img src="assets/skill_icons/Construction-icon.png" class="skill-icon"></a>
+  <a class="Skill" title="Summoning" data-toggle="tooltip" data-placement="top"><img src="assets/skill_icons/Summoning-icon.png" class="skill-icon"></a>
+  <a class="Skill" title="Dungeoneering" data-toggle="tooltip" data-placement="top"><img src="assets/skill_icons/Dungeoneering-icon.png" class="skill-icon"></a>
+</div>
+
+<input id="viewSkill" type="hidden" value='total'></input>
+
+<div id="hs-options" class="col-xs-12 col-md-3 pull-right">
+  <div class="col-xs-12 hs-option-group">
+    <span>Gamemode:</span>
+    <select id="ironman" class="form-control col-xs-12">
+      <option value="all" selected="selected">All</option>
+      <option value="0">Normal</option>
+      <option value="1">Ironman</option>
+    </select>
+  </div>
+
+  <div class="col-xs-12 hs-option-group">
+    <span>XP Mode:</span>
+    <select id="xpmode" class="form-control col-xs-12">
+      <option value="all" selected="selected">All</option>
+      <option value="0">x25</option>
+      <option value="1">x10</option>
+      <option value="2">x1</option>
+    </select>
+  </div>
+</div>
+
+<div id="hs-table-container" class="col-xs-12 col-md-9">
+  <table id="hs-table" class="table table-striped">
+    <thead>
+    </thead>
+    <tbody>
+    </tbody>
+  </table>
+</div>
+
+<script>
+(function() {
+  const SKILL_NAMES = ["Attack", "Defence", "Strength", "Constitution", "Ranged", "Prayer", "Magic", "Cooking", "Woodcutting", "Fletching", "Fishing", "Firemaking", "Crafting", "Smithing", "Mining", "Herblore", "Agility", "Thieving", "Slayer", "Farming", "Runecrafting", "Hunter", "Construction", "Summoning", "Dungeoneering"];
+
+  $('.skill-icons a').on('click', function() {
+    let skill = $(this).attr('title');
+    $('#viewSkill').val(skill);
+    populate();
+  })
+
+  function getSkillIdx(skill) {
+    for (let i = 0;i < SKILL_NAMES.length;i++) {
+      if (SKILL_NAMES[i].toLowerCase() == skill.toLowerCase())
+      return i;
+    }
+    return 0;
+  }
+
+  function resetTable() {
+    $('#hs-table tbody').empty();
+    $('#hs-table thead').empty();
+    $('#hs-table thead').append('<tr><th>Rank</th><th>Name</th><th>Level</th><th>Experience</th></tr>');
+  }
+
+  function populate() {
+    let skill = $('#viewSkill').val();
+    let xpmode = $('#xpmode option:selected').val();
+    let accountStatus =  $('#ironman option:selected').val();
+
+    resetTable();
+    let query = '&xpmode=' + xpmode
+    query += '&ironman=' + accountStatus;
+
+    let viewing = 'You are currently viewing ';
+
+      if (skill == 'total')
+        viewing += 'Total levels for ';
+      else
+        viewing += skill + ' levels for ';
+
+      if (accountStatus == 'all')
+         viewing += 'all players playing on';
+      else if (accountStatus == '0')
+         viewing += 'normal players playing on';
+      else
+         viewing += 'ironmen playing on ';
+
+     if (xpmode == 'all')
+        viewing += ' any xp rate.';
+     else if (xpmode == '0')
+        viewing += ' 25x rates.';
+     else if (xpmode == '1')
+        viewing += ' 10x rates.';
+     else
+        viewing += ' 1x rates.';
+
+    $('#nowViewing').text(viewing);
+
+    $.getJSON('http://darkan.org:5556/api/highscores/'+skill+query, function(data) {
+      for (let i = 0;i < data.length;i++) {
+        if (skill == 'total')
+        $('#hs-table tbody').append('<tr><td>'+(i+1)+'</td><td>'+data[i].username+'</td><td>'+data[i].totalLevel.toLocaleString()+'</td><td>'+data[i].totalXp.toLocaleString()+'</td></tr>');
+        else
+        $('#hs-table tbody').append('<tr><td>'+(i+1)+'</td><td>'+data[i].username+'</td><td>'+data[i].level[getSkillIdx(skill)].toLocaleString()+'</td><td>'+data[i].xp[getSkillIdx(skill)].toLocaleString()+'</td></tr>');
+      }
+    });
+  }
+
+  $('select').change(populate);
+  populate();
+})();
+</script>

@@ -4,8 +4,6 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 </head>
 
-<h4 id="nowViewing" class="text-center col-xs-12"></h4>
-
 <div class="skill-icons panel-body col-xs-12" style="text-align:center">
   <a class="Skill" title="total" data-toggle="tooltip" data-placement="top"><img src="assets/images/skill_icons/Overall-icon.png" class="skill-icon"></a>
   <a class="Skill" title="Attack" data-toggle="tooltip" data-placement="top"><img src="assets/images/skill_icons/Attack-icon.png" class="skill-icon"></a>
@@ -35,6 +33,8 @@
   <a class="Skill" title="Dungeoneering" data-toggle="tooltip" data-placement="top"><img src="assets/images/skill_icons/Dungeoneering-icon.png" class="skill-icon"></a>
 </div>
 
+<h4 id="nowViewing" class="text-center col-xs-12"></h4>
+
 <input id="viewSkill" type="hidden" value='total'></input>
 
 <div id="hs-options" class="col-xs-12 col-md-3 pull-right">
@@ -56,10 +56,25 @@
       <option value="2">x1</option>
     </select>
   </div>
+
+  <div class="col-xs-12 hs-option-group">
+    <span>Search user:</span>
+    <input id="username" class="form-control col-xs-12" type="text" name="Username" value="">
+    <button id="search-button" class="form-control col-xs-12" type="button" name="button">Search</button>
+  </div>
 </div>
 
 <div id="hs-table-container" class="col-xs-12 col-md-9">
   <table id="hs-table" class="table table-striped">
+    <thead>
+    </thead>
+    <tbody>
+    </tbody>
+  </table>
+</div>
+
+<div id="user-table-container" class="col-xs-12 col-md-9">
+  <table id="user-table" class="table table-striped">
     <thead>
     </thead>
     <tbody>
@@ -85,6 +100,46 @@
     return 0;
   }
 
+  function formatTitle(title) {
+    var finalTitle = '';
+    if (title) {
+      finalTitle = title;
+      finalTitle = finalTitle.replace(new RegExp('<shad=000000>', 'g'), '');
+      finalTitle = finalTitle.replace(new RegExp('</shad>', 'g'), '');
+      finalTitle = finalTitle.replace(new RegExp('<col=', 'g'), '<span style="color: #');
+      finalTitle = finalTitle.replace(new RegExp('</col>', 'g'), '</span>');
+      finalTitle = finalTitle.replace(new RegExp('>', 'g'), ';">');
+      finalTitle = finalTitle.replace(new RegExp('</span;">', 'g'), '</span>');
+      finalTitle += "</span> ";
+    }
+    return finalTitle;
+  }
+
+  function upperFirst(str) {
+    return str.charAt(0).toUpperCase() + str.slice(1)
+  }
+
+  function searchUser() {
+    let username = $('#username').val();
+    $.getJSON('http://darkan.org:5556/api/player/'+username.replace(/ /g,"_"), function(data) {
+      if (data) {
+        console.log(data);
+        $('#hs-table-container').hide();
+        $('#user-table-container').show();
+        $('#nowViewing').html(formatTitle(data.title) + upperFirst(username));
+        $('#user-table tbody').empty();
+        $('#user-table thead').empty();
+        $('#user-table thead').append('<tr><th>Skill</th><th>Level</th><th>Experience</th></tr>');
+        $('#user-table tbody').append('<tr><td><img src="assets/images/skill_icons/Overall-icon.png" class="skill-icon">Total</td><td>'+data.stats.totalLevel.toLocaleString()+'</td><td>'+data.stats.totalXp.toLocaleString()+'</td></tr>');
+        for (let i = 0;i < data.stats.skills.length;i++) {
+          $('#user-table tbody').append('<tr><td><img src="assets/images/skill_icons/'+SKILL_NAMES[i]+'-icon.png" class="skill-icon">'+SKILL_NAMES[i]+'</td><td>'+data.stats.skills[i].level.toLocaleString()+'</td><td>'+data.stats.skills[i].xp.toLocaleString()+'</td></tr>');
+        }
+      } else {
+        console.log('User not found.');
+      }
+    })
+  }
+
   function resetTable() {
     $('#hs-table tbody').empty();
     $('#hs-table thead').empty();
@@ -92,6 +147,8 @@
   }
 
   function populate() {
+    $('#user-table-container').hide();
+    $('#hs-table-container').show();
     let skill = $('#viewSkill').val();
     let xpmode = $('#xpmode option:selected').val();
     let accountStatus =  $('#ironman option:selected').val();
@@ -100,30 +157,7 @@
     let query = '&xpmode=' + xpmode
     query += '&ironman=' + accountStatus;
 
-    let viewing = 'You are currently viewing ';
-
-      if (skill == 'total')
-        viewing += 'Total levels for ';
-      else
-        viewing += skill + ' levels for ';
-
-      if (accountStatus == 'all')
-         viewing += 'all players playing on';
-      else if (accountStatus == '0')
-         viewing += 'normal players playing on';
-      else
-         viewing += 'ironmen playing on ';
-
-     if (xpmode == 'all')
-        viewing += ' any xp rate.';
-     else if (xpmode == '0')
-        viewing += ' 25x rates.';
-     else if (xpmode == '1')
-        viewing += ' 10x rates.';
-     else
-        viewing += ' 1x rates.';
-
-    $('#nowViewing').text(viewing);
+    $('#nowViewing').text(skill == 'total' ? 'Overall' : upperFirst(skill));
 
     $.getJSON('http://darkan.org:5556/api/highscores/'+skill+query, function(data) {
       for (let i = 0;i < data.length;i++) {
@@ -136,6 +170,7 @@
   }
 
   $('select').change(populate);
+  $('#search-button').on('click', searchUser);
   populate();
 })();
 </script>

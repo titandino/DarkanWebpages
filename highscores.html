@@ -128,10 +128,10 @@
         $('#nowViewing').html(formatTitle(data.title) + upperFirst(username));
         $('#user-table tbody').empty();
         $('#user-table thead').empty();
-        $('#user-table thead').append('<tr><th>Skill</th><th>Level</th><th>Experience</th></tr>');
-        $('#user-table tbody').append('<tr><td><img src="assets/images/skill_icons/Overall-icon.png" class="skill-icon">Total</td><td>'+data.stats.totalLevel.toLocaleString()+'</td><td>'+data.stats.totalXp.toLocaleString()+'</td></tr>');
+        $('#user-table thead').append('<tr><th>Skill</th><th>Rank</th><th>Level</th><th>Experience</th></tr>');
+        $('#user-table tbody').append('<tr><td><img src="assets/images/skill_icons/Overall-icon.png" class="skill-icon">Total</td><td>'+data.overallRank+'</td><td>'+data.stats.totalLevel.toLocaleString()+'</td><td>'+data.stats.totalXp.toLocaleString()+'</td></tr>');
         for (let i = 0;i < data.stats.skills.length;i++) {
-          $('#user-table tbody').append('<tr><td><img src="assets/images/skill_icons/'+SKILL_NAMES[i]+'-icon.png" class="skill-icon">'+SKILL_NAMES[i]+'</td><td>'+data.stats.skills[i].level.toLocaleString()+'</td><td>'+data.stats.skills[i].xp.toLocaleString()+'</td></tr>');
+          $('#user-table tbody').append('<tr><td><img src="assets/images/skill_icons/'+SKILL_NAMES[i]+'-icon.png" class="skill-icon">'+SKILL_NAMES[i]+'</td><td>'+data.ranks[i]+'</td><td>'+data.stats.skills[i].level.toLocaleString()+'</td><td>'+data.stats.skills[i].xp.toLocaleString()+'</td></tr>');
         }
       } else {
         console.log('User not found.');

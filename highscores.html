@@ -128,10 +128,10 @@
         $('#nowViewing').html(formatTitle(data.title) + upperFirst(username));
         $('#user-table tbody').empty();
         $('#user-table thead').empty();
-        $('#user-table thead').append('<tr><th>Skill</th><th>Rank</th><th>Level</th><th>Experience</th></tr>');
-        $('#user-table tbody').append('<tr><td><img src="assets/images/skill_icons/Overall-icon.png" class="skill-icon">Total</td><td>'+(data.overallRank ? data.overallRank : '-')+'</td><td>'+data.stats.totalLevel.toLocaleString()+'</td><td>'+data.stats.totalXp.toLocaleString()+'</td></tr>');
+        $('#user-table thead').append('<tr><th>Skill</th><th>Level</th><th>Experience</th></tr>');
+        $('#user-table tbody').append('<tr><td><img src="assets/images/skill_icons/Overall-icon.png" class="skill-icon">Total</td><td>'+data.stats.totalLevel.toLocaleString()+'</td><td>'+data.stats.totalXp.toLocaleString()+'</td></tr>');
         for (let i = 0;i < data.stats.skills.length;i++) {
-          $('#user-table tbody').append('<tr><td><img src="assets/images/skill_icons/'+SKILL_NAMES[i]+'-icon.png" class="skill-icon">'+SKILL_NAMES[i]+'</td><td>'+(data.overallRank ? data.ranks[i] : '-')+'</td><td>'+data.stats.skills[i].level.toLocaleString()+'</td><td>'+data.stats.skills[i].xp.toLocaleString()+'</td></tr>');
+          $('#user-table tbody').append('<tr><td><img src="assets/images/skill_icons/'+SKILL_NAMES[i]+'-icon.png" class="skill-icon">'+SKILL_NAMES[i]+'</td><td>'+data.stats.skills[i].level.toLocaleString()+'</td><td>'+data.stats.skills[i].xp.toLocaleString()+'</td></tr>');
         }
       } else {
         console.log('User not found.');
@@ -158,11 +158,12 @@
 
     $('#nowViewing').text(skill == 'total' ? 'Overall' : upperFirst(skill));
     $.getJSON('http://darkan.org:5556/api/highscores/?skill='+skill+query, function(data) {
+      console.log(data);
       for (let i = 0;i < data.length;i++) {
         if (skill == 'total')
-        $('#hs-table tbody').append('<tr><td>'+(i+1)+'</td><td>'+data[i].username+'</td><td>'+data[i].totalLevel.toLocaleString()+'</td><td>'+data[i].totalXp.toLocaleString()+'</td></tr>');
+        $('#hs-table tbody').append('<tr><td>'+(i+1)+'</td><td>'+data[i].displayName+'</td><td>'+data[i].totalLevel.toLocaleString()+'</td><td>'+data[i].totalXp.toLocaleString()+'</td></tr>');
         else
-        $('#hs-table tbody').append('<tr><td>'+(i+1)+'</td><td>'+data[i].username+'</td><td>'+data[i].level[getSkillIdx(skill)].toLocaleString()+'</td><td>'+data[i].xp[getSkillIdx(skill)].toLocaleString()+'</td></tr>');
+        $('#hs-table tbody').append('<tr><td>'+(i+1)+'</td><td>'+data[i].displayName+'</td><td>'+data[i].level[getSkillIdx(skill)].toLocaleString()+'</td><td>'+data[i].xp[getSkillIdx(skill)].toLocaleString()+'</td></tr>');
       }
     });
   }

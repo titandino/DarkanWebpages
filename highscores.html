@@ -179,7 +179,7 @@
         if (skill == 'total')
           $('#hs-table tbody').append('<tr><td>'+(i+1)+'</td><td '+getColor(data[i].accountType)+'>'+getPrefix(data[i].ironman)+' '+data[i].displayName+'</td><td>'+data[i].totalLevel.toLocaleString()+'</td><td>'+data[i].totalXp.toLocaleString()+'</td></tr>');
         else
-          $('#hs-table tbody').append('<tr><td>'+(i+1)+'</td><td '+getColor(data[i].accountType)+'>'+getPrefix(data[i].ironman)+' '+data[i].level[getSkillIdx(skill)].toLocaleString()+'</td><td>'+data[i].xp[getSkillIdx(skill)].toLocaleString()+'</td></tr>');
+          $('#hs-table tbody').append('<tr><td>'+(i+1)+'</td><td '+getColor(data[i].accountType)+'>'+getPrefix(data[i].ironman)+' '+data[i].displayName+'</td><td>'+data[i].level[getSkillIdx(skill)].toLocaleString()+'</td><td>'+data[i].xp[getSkillIdx(skill)].toLocaleString()+'</td></tr>');
       }
     });
   }

@@ -145,6 +145,22 @@
     $('#hs-table thead').append('<tr><th>Rank</th><th>Name</th><th>Level</th><th>Experience</th></tr>');
   }
 
+  function getColor(type) {
+    if (type == 1)
+      return 'style="text-shadow:2px 2px 5px green;"';
+    if (type == 2)
+      return 'style="text-shadow:2px 2px 5px red;"';
+    return '';
+  }
+
+  function getPrefix(ironman) {
+    let prefix = '';
+    if (ironman) {
+      prefix += '<img src="https://i.imgur.com/QPvgyhy.png">'
+    }
+    return prefix;
+  }
+
   function populate() {
     $('#user-table-container').hide();
     $('#hs-table-container').show();
@@ -161,9 +177,9 @@
       console.log(data);
       for (let i = 0;i < data.length;i++) {
         if (skill == 'total')
-        $('#hs-table tbody').append('<tr><td>'+(i+1)+'</td><td>'+data[i].displayName+'</td><td>'+data[i].totalLevel.toLocaleString()+'</td><td>'+data[i].totalXp.toLocaleString()+'</td></tr>');
+          $('#hs-table tbody').append('<tr><td>'+(i+1)+'</td><td '+getColor(data[i].accountType)+'>'+getPrefix(data[i].ironman)+' '+data[i].displayName+'</td><td>'+data[i].totalLevel.toLocaleString()+'</td><td>'+data[i].totalXp.toLocaleString()+'</td></tr>');
         else
-        $('#hs-table tbody').append('<tr><td>'+(i+1)+'</td><td>'+data[i].displayName+'</td><td>'+data[i].level[getSkillIdx(skill)].toLocaleString()+'</td><td>'+data[i].xp[getSkillIdx(skill)].toLocaleString()+'</td></tr>');
+          $('#hs-table tbody').append('<tr><td>'+(i+1)+'</td><td '+getColor(data[i].accountType)+'>'+getPrefix(data[i].ironman)+' '+data[i].displayName+'</td><td>'+data[i].level[getSkillIdx(skill)].toLocaleString()+'</td><td>'+data[i].xp[getSkillIdx(skill)].toLocaleString()+'</td></tr>');
       }
     });
   }

@@ -1,0 +1,59 @@
+<head>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" charset="utf-8"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" charset="utf-8"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+</head>
+
+<div class="text-center" id="vote-enter-name">
+  <label for="username">Enter your username: </label>
+  <input id="vote-username-input" type="text" name="username" value="" placeholder="Username">
+  <span id="username-error"></span>
+  <button id="vote-button" type="submit" name="button">Generate Vote Links</button>
+</div>
+<table class="text-center table table-bordered table-striped" id="vote-links">
+</table>
+
+<script>
+(function() {
+  let LINKS = [
+    {
+      'name' : 'Rune-Server',
+      'url': 'https://www.rune-server.ee/toplist.php?do=vote&sid=10902&name=Darkan_2012_Remake&incentive=USER_NAME'
+    }, {
+    'name' : 'TopG',
+    'url': 'https://topg.org/Runescape/in-493167-USER_NAME'
+    }, {
+    'name' : 'Top100Arena',
+    'url': 'http://www.top100arena.com/in.asp?id=93969&incentive=USER_NAME'
+    }, {
+    'name' : 'RSPSServer',
+    'url': 'https://rspserver.com/server/1462-darkan-2012-remake/vote/USER_NAME'
+    }, {
+    'name' : 'RSPS-List',
+    'url': 'https://www.rsps-list.com/index.php?a=in&u=titandino&id=USER_NAME'
+    }, {
+    'name' : 'Moparscape',
+    'url': 'https://www.moparscape.org/top-rsps/server/darkan?name=USER_NAME'
+    }, {
+    'name' : 'Runelocus',
+    'url': 'https://www.runelocus.com/top-rsps-list/vote-45257/?id2=USER_NAME'
+    }
+  ];
+
+  $('#vote-button').on('click', (e) => {
+    let username = $('#vote-username-input').val().replace(/ /g, '_').toLowerCase();
+    $.getJSON('http://darkan.org:5556/api/player/'+username, function(data) {
+      if (data) {
+        $('#vote-enter-username').hide();
+        LINKS.forEach(link => {
+          $('#vote-links').append('<tr class="col-md-4"><td class="text-center"><a href="'+link.url.replace('USER_NAME', username)+'" target="_blank">'+link.name+'</a></td></tr>')
+        })
+      } else {
+        $('#username-error').text('Username not found.');
+      }
+    }).error(function(event, jqxhr, exception) {
+      $('#username-error').text('Username not found.');
+    });
+  });
+})()
+</script>

@@ -136,7 +136,9 @@
       } else {
         console.log('User not found.');
       }
-    })
+    }).error(function(event, jqxhr, exception) {
+      console.log('User not found.');
+    });
   }
 
   function resetTable() {

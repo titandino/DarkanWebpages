@@ -11,14 +11,6 @@
 <p class="col-xs-12" style="font-weight: bold;">Players online: <span id="numplayers"></span></p>
 
 <script>
-if (ajaxify.currentPage != '') {
-    $('#playersOnlineWidget').hide();
-    $('div[widget-area="sidebar"]').hide();
-    $('div[widget-area="sidebar"]').width(0);
-    $('div[widget-area="sidebar"]').css("margin", 0);
-    $('div[widget-area="sidebar"]').css("padding", 0+"px");
-}
-
   $.getJSON("http://darkan.org:5556/api/world/players", function(data) {
     $('#numplayers').text(data.length);
     for (var i = 0;i < data.length;i++) {

@@ -4,14 +4,18 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 </head>
 
-<div class="text-center" id="vote-enter-name">
-  <label for="username">Enter your username: </label>
-  <input id="vote-username-input" type="text" name="username" value="" placeholder="Username">
-  <span id="username-error"></span>
-  <button id="vote-button" type="submit" name="button">Generate Vote Links</button>
+<div class="row">
+  <form class="text-center col-md-4 col-md-offset-5" id="vote-enter-name">
+    <div class="form-group">
+      <label for="vote-username-input">Enter your username: </label>
+      <input type="text" class="form-control" id="vote-username-input" aria-describedby="username-error" placeholder="Username">
+      <small  style="color:#FF0000" id="username-error" class="form-text text-muted"></small>
+    </div>
+    <button id="vote-button" type="submit" class="btn btn-primary">Generate Vote Links</button>
+  </form>
+  <div class="col-md-4 col-md-offset-5" id="vote-links">
+  </div>
 </div>
-<table class="text-center table table-bordered table-striped" id="vote-links">
-</table>
 
 <script>
 (function() {
@@ -40,18 +44,19 @@
     }
   ];
 
-  $('#vote-button').on('click', (e) => {
+  $('#vote-enter-name').submit((e) => {
+    e.preventDefault();
     let username = $('#vote-username-input').val().replace(/ /g, '_').toLowerCase();
     $.getJSON('http://darkan.org:5556/api/player/'+username, function(data) {
       if (data) {
-        $('#vote-enter-username').hide();
+        $('#vote-enter-name').hide();
         LINKS.forEach(link => {
-          $('#vote-links').append('<tr class="col-md-4"><td class="text-center"><a href="'+link.url.replace('USER_NAME', username)+'" target="_blank">'+link.name+'</a></td></tr>')
+          $('#vote-links').append('<a href="'+link.url.replace('USER_NAME', username)+'" target="_blank"><button class="btn btn-primary" style="margin: 10px" type="button">'+link.name+'</button></a>')
         })
       } else {
         $('#username-error').text('Username not found.');
       }
-    }).error(function(event, jqxhr, exception) {
+    }).fail(function(event, jqxhr, exception) {
       $('#username-error').text('Username not found.');
     });
   });

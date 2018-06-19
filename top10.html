@@ -1,0 +1,57 @@
+<head>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" charset="utf-8"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" charset="utf-8"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+</head>
+
+<div id="t10-table-container">
+  <table id="t10-table" class="table table-striped">
+    <thead>
+    </thead>
+    <tbody>
+    </tbody>
+  </table>
+</div>
+
+<script>
+(function() {
+  function upperFirst(str) {
+    return str.charAt(0).toUpperCase() + str.slice(1)
+  }
+
+  function resetTable() {
+    $('#t10-table tbody').empty();
+    $('#t10-table thead').empty();
+    $('#t10-table thead').append('<tr><th>Rank</th><th>Name</th><th>Level</th></tr>');
+  }
+
+  function getPrefix(ironman) {
+    let prefix = '';
+    if (ironman) {
+      prefix += '<img src="https://i.imgur.com/QPvgyhy.png">'
+    }
+    return prefix;
+  }
+
+  function getColor(type) {
+    if (type == 1)
+      return 'style="text-shadow:2px 2px 5px green;"';
+    if (type == 2)
+      return 'style="text-shadow:2px 2px 5px red;"';
+    return '';
+  }
+
+  function populate() {
+    $('#t10-table-container').hide();
+    resetTable();
+    $.getJSON('http://darkan.org:5556/api/highscores/?skill=total', function(data) {
+      for (let i = 0;i < 10;i++) {
+        $('#t10-table tbody').append('<tr><td>'+(i+1)+'</td><td '+getColor(data[i].accountType)+'>'+getPrefix(data[i].ironman)+' '+data[i].displayName+'</td><td>'+data[i].totalLevel.toLocaleString()+'</td></tr>');
+      }
+      $('#t10-table-container').show();
+    });
+  }
+
+  populate();
+})();
+</script>

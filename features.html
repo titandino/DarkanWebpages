@@ -1,0 +1,71 @@
+<head>
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js" charset="utf-8"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" charset="utf-8"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+</head>
+
+<style>
+#slides {
+  position: relative;
+  height: 400px;
+  padding: 0px;
+  margin: 0px;
+  list-style-type: none;
+}
+
+.slide {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  z-index: 1;
+
+  -webkit-transition: opacity 1s;
+  -moz-transition: opacity 1s;
+  -o-transition: opacity 1s;
+  transition: opacity 1s;
+}
+
+.showing {
+  opacity: 1;
+  z-index: 2;
+}
+</style>
+
+<ul id="slides">
+  <li class="slide showing carousel-item">
+    <img src="./assets/images/features/construction.png" alt="Construction">
+    <div style="color: #FFFFFF; position: absolute; top: 20px; left: 20px;">
+      <h4>Construction</h4>
+      <p>Build your own house to store pets in, train prayer, and fight other players!</p>
+    </div>
+  </li>
+  <li class="slide carousel-item">
+    <img src="./assets/images/features/hunter.png" alt="Hunter">
+    <div style="color: #FFFFFF; position: absolute; top: 20px; left: 20px;">
+      <h4>Hunter</h4>
+      <p>Catch all kinds of creatures for incredible benefits </p>
+    </div>
+  </li>
+  <li class="slide carousel-item">
+    <img src="./assets/images/features/agility.png" alt="Agility">
+    <div style="color: #FFFFFF; position: absolute; top: 20px; left: 20px;">
+      <h4>Agility</h4>
+      <p>Run around in circles for hours just so you can be able to get places faster in the future!</p>
+    </div>
+  </li>
+</ul>
+
+<script type="text/javascript">
+var slides = document.querySelectorAll('#slides .slide');
+var currentSlide = 0;
+var slideInterval = setInterval(nextSlide, 5000);
+
+function nextSlide() {
+  slides[currentSlide].className = 'slide';
+  currentSlide = (currentSlide+1)%slides.length;
+  slides[currentSlide].className = 'slide showing';
+}
+</script>

@@ -10,17 +10,15 @@
   let canvas = document.getElementById("worldmap");
   let ctx = canvas.getContext("2d");
   let mapImage = new Image();
-  let xOff = 2053;
-  let yOff = 2519;
   let dotSize = 7;
-  mapImage.src = 'http://i.imgur.com/6500xOT.png';
+  mapImage.src = './assets/images/map.png';
   mapImage.onload = loadup;
 
   function renderMap() {
-    canvas.width = mapImage.naturalWidth;
-    canvas.height = mapImage.naturalHeight;
+    canvas.width = 6347;
+    canvas.height = 6692;
     ctx.drawImage(mapImage, 0, 0);
-    ctx.drawImage(mapImage, 0, 0, mapImage.width, mapImage.height);
+    ctx.drawImage(mapImage, 0, 0, 6347, 6692);
   }
 
   function loadup() {
@@ -34,8 +32,8 @@
     function renderPlayers() {
       $.getJSON('http://darkan.org:5556/api/world/players', function(data) {
         for (let i = 0;i < data.length;i++) {
-          let x = data[i].coords.x-xOff;
-          let y = canvas.height-(data[i].coords.y-yOff);
+          let x = data[i].coords.x;
+          let y = 6692-data[i].coords.y;
           ctx.textAlign = 'center';
           ctx.font = 'bold 16px arial';
           ctx.fillStyle = '#00FF00';

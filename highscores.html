@@ -41,7 +41,7 @@
   <div class="col-xs-12 hs-option-group">
     <span>Gamemode:</span>
     <select id="ironman" class="form-control col-xs-12">
-      <option value="all" selected="selected">All</option>
+      <option value="-1" selected="selected">All</option>
       <option value="0">Normal</option>
       <option value="1">Ironman</option>
     </select>
@@ -50,7 +50,7 @@
   <div class="col-xs-12 hs-option-group">
     <span>XP Mode:</span>
     <select id="xpmode" class="form-control col-xs-12">
-      <option value="all" selected="selected">All</option>
+      <option value="-1" selected="selected">All</option>
       <option value="0">x25</option>
       <option value="1">x10</option>
       <option value="2">x1</option>
@@ -171,7 +171,7 @@
     let accountStatus =  $('#ironman option:selected').val();
 
     resetTable();
-    let query = '&xpmode=' + xpmode
+    let query = '&xpMode=' + xpmode
     query += '&ironman=' + accountStatus;
 
     $('#nowViewing').text(skill == 'total' ? 'Overall' : upperFirst(skill));
